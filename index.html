@@ -5,6 +5,42 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Alpha Store</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Estilos básicos para el modal */
+    #detallesProducto {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border: 2px solid #333;
+      padding: 20px;
+      z-index: 1000;
+      max-width: 90%;
+      max-height: 80%;
+      overflow-y: auto;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+    #detallesProducto img {
+      width: 150px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+    }
+    #overlay {
+      display: none;
+      position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: rgba(0,0,0,0.5);
+      z-index: 999;
+    }
+    #detallesProducto button {
+      margin-bottom: 15px;
+      cursor: pointer;
+    }
+    .producto {
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -21,25 +57,25 @@
     <section id="catalogo" class="catalogo">
       <h2>Catálogo</h2>
 
-      <div class="producto">
+      <div class="producto" onclick="mostrarDetalles('airpods3')">
         <img src="img/airpods-3gen.jpg" alt="AirPods 3ra Generación" />
         <h3>AirPods 3ra Generación</h3>
         <p>$350 MXN</p>
       </div>
 
-      <div class="producto">
+      <div class="producto" onclick="mostrarDetalles('airpodspro2')">
         <img src="img/airpods-pro2.jpg" alt="AirPods Pro 2" />
         <h3>AirPods Pro 2</h3>
         <p>$450 MXN</p>
       </div>
 
-      <div class="producto">
+      <div class="producto" onclick="mostrarDetalles('cargadorlc')">
         <img src="img/cargador-lc.jpg" alt="Cargador Lightning a USB-C" />
         <h3>Cargador Lightning a USB-C</h3>
         <p>$220 MXN</p>
       </div>
 
-      <div class="producto">
+      <div class="producto" onclick="mostrarDetalles('cargadorcc')">
         <img src="img/cargador-cc.jpg" alt="Cargador USB-C a USB-C" />
         <h3>Cargador USB-C a USB-C</h3>
         <p>$220 MXN</p>
@@ -50,8 +86,9 @@
       <h2>Contacto</h2>
       <p>Para realizar un pedido o resolver dudas, contáctanos:</p>
       <ul>
-        <li>📱 WhatsApp:<a href="https://wa.me/527773422664" target="_blank">Enviar mensaje</a></li>
-        <li>📧 Correo: <a href="mailto:">alpha.store.2192@gmail.com</a></li>
+        <li>📱 WhatsApp 1: <a href="https://wa.me/527773422664" target="_blank">Enviar mensaje</a></li>
+        <li>📱 WhatsApp 2: <a href="https://wa.me/527771115824" target="_blank">Enviar mensaje</a></li>
+        <li>📧 Correo: <a href="mailto:alpha.store.2192@gmail.com">contacto@alphastore.com</a></li>
       </ul>
     </section>
   </main>
@@ -59,7 +96,95 @@
   <footer>
     <p>© 2025 Alpha Store - Todos los derechos reservados</p>
   </footer>
+
+  <!-- Overlay y modal para detalles -->
+  <div id="overlay" onclick="cerrarDetalles()"></div>
+  <div id="detallesProducto">
+    <button onclick="cerrarDetalles()">Cerrar</button>
+    <div id="contenidoDetalles"></div>
+  </div>
+
+  <script>
+    const productos = {
+      airpods3: {
+        fotos: [
+          "img/airpods-3gen.jpg",
+          "img/airpods-3gen-2.jpg"
+        ],
+        especificaciones: [
+          "Duración de batería: 6 horas",
+          "Resistente al agua",
+          "Cancelación activa de ruido"
+        ]
+      },
+      airpodspro2: {
+        fotos: [
+          "img/airpods-pro2.jpg",
+          "img/airpods-pro2-2.jpg"
+        ],
+        especificaciones: [
+          "Duración de batería: 5 horas",
+          "Cancelación activa de ruido avanzada",
+          "Compatible con carga inalámbrica"
+        ]
+      },
+      cargadorlc: {
+        fotos: [
+          "img/cargador-lc.jpg",
+          "img/cargador-lc-2.jpg"
+        ],
+        especificaciones: [
+          "Cable Lightning a USB-C",
+          "1 metro de longitud",
+          "Carga rápida compatible"
+        ]
+      },
+      cargadorcc: {
+        fotos: [
+          "img/cargador-cc.jpg",
+          "img/cargador-cc-2.jpg"
+        ],
+        especificaciones: [
+          "Cable USB-C a USB-C",
+          "1 metro de longitud",
+          "Compatible con carga rápida"
+        ]
+      }
+    };
+
+    function mostrarDetalles(id) {
+      const detalles = productos[id];
+      if (!detalles) return;
+
+      const contenido = document.getElementById('contenidoDetalles');
+      contenido.innerHTML = "";
+
+      detalles.fotos.forEach(foto => {
+        const img = document.createElement('img');
+        img.src = foto;
+        img.alt = "Foto del producto";
+        contenido.appendChild(img);
+      });
+
+      const ul = document.createElement('ul');
+      detalles.especificaciones.forEach(texto => {
+        const li = document.createElement('li');
+        li.textContent = texto;
+        ul.appendChild(li);
+      });
+      contenido.appendChild(ul);
+
+      document.getElementById('overlay').style.display = 'block';
+      document.getElementById('detallesProducto').style.display = 'block';
+    }
+
+    function cerrarDetalles() {
+      document.getElementById('overlay').style.display = 'none';
+      document.getElementById('detallesProducto').style.display = 'none';
+    }
+  </script>
 </body>
 </html>
+
 
 
